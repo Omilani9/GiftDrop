@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>GiftDrop — Buy & Sell Gift Cards Worldwide</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0e0e0e;
+      --white: #fafaf8;
+      --cream: #f5f3ee;
+      --accent: #c8a96e;
+      --accent-dark: #a8894e;
+      --gray: #6b6b6b;
+      --light-gray: #e8e6e1;
+      --card-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex; gap: 1.2rem; list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover { color: var(--black); }
+
+    .nav-cta {
+      background: var(--black);
+      color: var(--white) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.8rem !important;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 6rem 1.5rem 4rem;
+      background: var(--cream);
+      position: relative;
+    }
+
+    .hero-content { max-width: 100%; animation: fadeUp 0.8s ease both; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--black);
+      color: var(--white);
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none; cursor: pointer;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--accent); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--black);
+      padding: 0.75rem 1.5rem;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid var(--light-gray);
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .brands {
+      padding: 2rem 1.5rem;
+      border-bottom: 1px solid var(--light-gray);
+      text-align: center;
+    }
+
+    .brands p { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gray); margin-bottom: 1rem; }
+
+    .brand-logos {
+      display: flex; justify-content: center; align-items: center;
+      gap: 1rem; flex-wrap: wrap;
+    }
+
+    .brand-logos img {
+      height: 30px;
+      width: auto;
+      opacity: 0.6;
+    }
+
+    .products, .sell-cards {
+      padding: 4rem 1.5rem;
+    }
+
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--accent);
+      font-weight: 600; margin-bottom: 0.3rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .card-banner {
+      height: 110px;
+      display: flex; align-items: center; justify-content: center;
+      background: #f8f8f8;
+      position: relative;
+    }
+
+    .card-banner img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .card-body { padding: 0.8rem 1rem 1rem; }
+    .card-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+    .card-prices {
+      display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.8rem;
+    }
+
+    .price-tag {
+      background: var(--cream);
+      border: 1px solid var(--light-gray);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .card-buy {
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      padding: 0.6rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .how {
+      padding: 4rem 1.5rem;
+      background: var(--cream);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .step {
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+
+    .step-number {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .step h3 { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .step p { font-size: 0.8rem; color: var(--gray); }
+
+    footer {
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--light-gray);
+      display: flex; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.75rem;
+    }
+
+    /* ========== FULL PAGE SLIDE IN MODAL ========== */
+    .full-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      z-index: 1000;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+    }
+
+    .full-modal.open {
+      transform: translateX(0);
+    }
+
+    .modal-header {
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--gray);
+      line-height: 1;
+    }
+
+    .modal-content {
+      padding: 1.5rem;
+      padding-bottom: 3rem;
+    }
+
+    .card-preview {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--cream);
+      padding: 1rem;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-preview img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .card-preview h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-preview .rate-badge {
+      background: var(--accent);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      display: inline-block;
+    }
+
+    .info-row {
+      background: var(--cream);
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .info-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .info-value {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    .form-group input, 
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      background: var(--white);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .file-upload {
+      border: 1.5px dashed var(--light-gray);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      background: var(--cream);
+    }
+
+    .file-upload input {
+      display: none;
+    }
+
+    .total-box {
+      background: var(--black);
+      color: var(--white);
+      padding: 1rem;
+      border-radius: 16px;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .total-box .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .total-box .amount {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: 'DM Serif Display', serif;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: var(--black);
+      border: none;
+      padding: 1rem;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .admin-panel {
+      display: none;
+      padding: 2rem 1rem;
+      background: var(--cream);
+      min-height: 100vh;
+    }
+
+    .admin-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .admin-approve, .admin-reject {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+
+    .admin-approve { background: #4caf50; color: white; }
+    .admin-reject { background: #f44336; color: white; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Gift<span>Drop</span></a>
+  <ul class="nav-links">
+    <li><a href="#products">Buy</a></li>
+    <li><a href="#sell">Sell</a></li>
+    <li><a href="#" onclick="checkWallet(); return false;">💰</a></li>
+    <li><a href="#sell" class="nav-cta">Sell</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Instant payouts</div>
+    <h1>Sell <em>gift cards</em><br/>for cash.</h1>
+    <p class="hero-sub">Best rates. Fast approval. Get paid in minutes.</p>
+    <div class="hero-actions">
+      <a href="#sell" class="btn-primary">Sell Now</a>
+    </div>
+  </div>
+</section>
+
+<section class="brands">
+  <p>Trusted brands</p>
+  <div class="brand-logos" id="brandLogos"></div>
+</section>
+
+<section class="products" id="products">
+  <div class="section-header"><div><div class="section-label">Browse</div><h2 class="section-title">Popular Cards</h2></div></div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</section>
+
+<section class="sell-cards" id="sell">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <div class="section-label">Sell</div>
+    <h2 class="section-title">Get Instant Cash</h2>
+    <p style="font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem;">Select your card below</p>
+  </div>
+  <div class="cards-grid" id="sellRatesGrid"></div>
+</section>
+
+<section class="how" id="how">
+  <div style="text-align:center"><div class="section-label">Process</div><h2 class="section-title">How It Works</h2></div>
+  <div class="steps">
+    <div class="step"><div class="step-number">1</div><h3>Select Card</h3><p>Choose brand & currency</p></div>
+    <div class="step"><div class="step-number">2</div><h3>Upload Details</h3><p>Add code, value & photo</p></div>
+    <div class="step"><div class="step-number">3</div><h3>Admin Reviews</h3><p>Fast approval</p></div>
+    <div class="step"><div class="step-number">4</div><h3>Get Paid</h3><p>Money in wallet</p></div>
+  </div>
+</section>
+
+<footer><a href="#" class="footer-logo">Gift<span>Drop</span></a><p>© 2025 GiftDrop</p></footer>
+
+<!-- FULL PAGE SLIDE IN MODAL -->
+<div id="sellModal" class="full-modal">
+  <div class="modal-header">
+    <h2>Sell Gift Card</h2>
+    <button class="close-modal" onclick="closeSellModal()">&times;</button>
+  </div>
+  <div class="modal-content">
+    <div class="card-preview" id="modalCardPreview">
+      <img id="modalCardImg" src="" alt="">
+      <div>
+        <h3 id="modalCardName">Loading...</h3>
+        <span class="rate-badge" id="modalRate">0% Rate</span>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <span class="info-label">💰 Admin Fee Range</span>
+      <span class="info-value">$10 - $10,000</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">⏱️ Wait Time</span>
+      <span class="info-value">3-5 minutes</span>
+    </div>
+
+    <div class="form-group">
+      <label>📷 Upload Card Image</label>
+      <div class="file-upload" onclick="document.getElementById('cardImageInput').click()">
+        <input type="file" id="cardImageInput" accept="image/*" style="display:none">
+        <span>📸 Click to upload image of gift card</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>🔑 Card Code / PIN</label>
+      <input type="text" id="cardCodeInput" placeholder="Enter the gift card code or PIN">
+    </div>
+
+    <div class="form-group">
+      <label>💵 Face Value (Amount on Card)</label>
+      <input type="number" id="faceValueInput" placeholder="Enter amount on card" oninput="calculatePayoutModal()">
+    </div>
+
+    <div class="total-box">
+      <div class="label">You will receive</div>
+      <div class="amount" id="modalTotalPayout">$0.00</div>
+    </div>
+
+    <div class="form-group">
+      <label>📝 Remarks (Optional)</label>
+      <textarea id="userRemarks" rows="2" placeholder="Any additional info about this card..."></textarea>
+    </div>
+
+    <button class="submit-btn" onclick="submitCardSale()">Submit for Review →</button>
+  </div>
+</div>
+
+<!-- Admin Panel -->
+<div id="adminPanel" class="admin-panel">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <h2 style="font-family: 'DM Serif Display', serif;">Admin</h2>
+    <button onclick="closeAdminPanel()" style="margin-bottom: 1rem;">← Back</button>
+    <h3>Pending Cards</h3>
+    <div id="pendingCardsList"></div>
+    <h3 style="margin-top: 2rem;">Withdrawals</h3>
+    <div id="withdrawalRequestsList"></div>
+  </div>
+</div>
+
+<script>
+// ============ BRAND DATA ============
+const brandCurrencies = {
+  "Amazon": { USD: 85, img: "amazon.png" },
+  "iTunes & Apple": { USD: 85, CAD: 80, AUD: 75, EUR: 82, GBP: 88, img: "itunes-apple.png" },
+  "Steam": { USD: 78, img: "steam.png" },
+  "PlayStation": { USD: 75, img: "playstation.png" },
+  "Roblox": { USD: 85, img: "roblox.png" },
+  "Google": { USD: 83, img: "google.png" },
+  "Netflix": { USD: 80, img: "netflix.png" },
+  "Spotify": { USD: 65, img: "spotify.png" },
+  "Sephora": { USD: 82, img: "sephora.png" },
+  "Nike": { USD: 73, img: "nike.png" },
+  "Walmart": { USD: 78, img: "walmart.png" },
+  "Target": { USD: 79, img: "target.png" },
+  "eBay": { USD: 76, img: "ebay.png" },
+  "Uber": { USD: 77, img: "uber.png" }
+};
+
+const brandList = Object.keys(brandCurrencies);
+
+function getBrandImage(brand) {
+  return `images/${brandCurrencies[brand].img || brand.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`;
+}
+
+// Render brand logos
+const brandLogosDiv = document.getElementById('brandLogos');
+if (brandLogosDiv) {
+  brandList.slice(0, 8).forEach(brand => {
+    const img = document.createElement('img');
+    img.src = getBrandImage(brand);
+    img.alt = brand;
+    img.onerror = function() { this.style.display = 'none'; };
+    brandLogosDiv.appendChild(img);
+  });
+}
+
+// Render buy grid
+const buyGrid = document.getElementById('cardsGrid');
+if (buyGrid) {
+  brandList.slice(0, 8).forEach(brand => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `<div class="card-banner"><img src="${getBrandImage(brand)}" alt="${brand}" onerror="this.src='images/placeholder.png'"></div><div class="card-body"><div class="card-name">${brand}</div><button class="card-buy" onclick="alert('Buy coming soon')">Buy</button></div>`;
+    buyGrid.appendChild(card);
+  });
+}
+
+// Render sell grid
+const sellGrid = document.getElementById('sellRatesGrid');
+if (sellGrid) {
+  brandList.forEach(brand => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `<div class="card-banner"><img src="${getBrandImage(brand)}" alt="${brand}" onerror="this.src='images/placeholder.png'"></div><div class="card-body"><div class="card-name">${brand}</div><button class="card-buy" onclick="openSellModal('${brand}')">Sell →</button></div>`;
+    sellGrid.appendChild(card);
+  });
+}
+
+// Modal variables
+let currentBrand = '';
+let currentRate = 85;
+
+function openSellModal(brand) {
+  currentBrand = brand;
+  const rates = brandCurrencies[brand];
+  // Get first available rate (default USD)
+  const firstCurrency = Object.keys(rates).find(k => k !== 'img');
+  currentRate = rates[firstCurrency] || 85;
+  
+  document.getElementById('modalCardName').innerHTML = brand;
+  document.getElementById('modalCardImg').src = getBrandImage(brand);
+  document.getElementById('modalRate').innerHTML = `${currentRate}% Rate`;
+  document.getElementById('faceValueInput').value = '';
+  document.getElementById('cardCodeInput').value = '';
+  document.getElementById('userRemarks').value = '';
+  document.getElementById('modalTotalPayout').innerHTML = '$0.00';
+  document.getElementById('cardImageInput').value = '';
+  
+  document.getElementById('sellModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSellModal() {
+  document.getElementById('sellModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function calculatePayoutModal() {
+  const faceValue = parseFloat(document.getElementById('faceValueInput').value) || 0;
+  const payout = (faceValue * currentRate / 100).toFixed(2);
+  document.getElementById('modalTotalPayout').innerHTML = `$${payout}`;
+}
+
+function submitCardSale() {
+  const faceValue = parseFloat(document.getElementById('faceValueInput').value);
+  const cardCode = document.getElementById('cardCodeInput').value.trim();
+  const remarks = document.getElementById('userRemarks').value;
+  const imageFile = document.getElementById('cardImageInput').files[0];
+  
+  if (!faceValue || faceValue <= 0) {
+    alert('Please enter the face value of the card');
+    return;
+  }
+  if (!cardCode) {
+    alert('Please enter the card code/PIN');
+    return;
+  }
+  
+  const payout = (faceValue * currentRate / 100).toFixed(2);
+  const sellerEmail = prompt('Enter your email (for payment notification):');
+  if (!sellerEmail) return;
+  
+  // Handle image (convert to base64 for demo)
+  if (imageFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, e.target.result);
+    };
+    reader.readAsDataURL(imageFile);
+  } else {
+    saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, null);
+  }
+}
+
+function saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, imageData) {
+  const pendingCard = {
+    id: Date.now(),
+    brand: currentBrand,
+    currency: 'USD',
+    value: faceValue,
+    code: cardCode,
+    remarks: remarks,
+    payout: payout,
+    rate: currentRate,
+    status: 'pending',
+    sellerEmail: sellerEmail,
+    image: imageData,
+    date: new Date().toISOString()
+  };
+  
+  let pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
+  pending.push(pendingCard);
+  localStorage.setItem('pendingCards', JSON.stringify(pending));
+  
+  alert(`✅ ${currentBrand} card submitted!\nValue: $${faceValue}\nYou'll receive: $${payout}\nAdmin will review shortly.`);
+  closeSellModal();
+}
+
+// Wallet
+function checkWallet() {
+  const email = prompt('Enter your email:');
+  if (!email) return;
+  const balance = localStorage.getItem(`wallet_${email}`) || '0';
+  alert(`💰 Balance: $${parseFloat(balance).toFixed(2)}`);
+  if (parseFloat(balance) > 0 && confirm('Request withdrawal?')) {
+    let requests = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
+    requests.push({ email, amount: parseFloat(balance), status: 'pending' });
+    localStorage.setItem('withdrawalRequests', JSON.stringify(requests));
+    alert('Withdrawal request sent to admin');
+  }
+}
+
+// Admin functions
+function loadAdminPanel() {
+  document.querySelector('nav').style.display = 'none';
+  document.querySelector('.hero').style.display = 'none';
+  document.querySelector('.brands').style.display = 'none';
+  document.querySelector('.products').style.display = 'none';
+  document.querySelector('.sell-cards').style.display = 'none';
+  document.querySelector('.how').style.display = 'none';
+  document.querySelector('footer').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  renderAdminPending();
+  renderWithdrawalRequests();
+}
+
+function closeAdminPanel() {
+  document.querySelector('nav').style.display = 'flex';
+  document.querySelector('.hero').style.display = 'flex';
+  document.querySelector('.brands').style.display = 'block';
+  document.querySelector('.products').style.display = 'block';
+  document.querySelector('.sell-cards').style.display = 'block';
+  document.querySelector('.how').style.display = 'block';
+  document.querySelector('footer').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+}
+
+function renderAdminPending() {
+  const pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
+  const container = document.getElementById('pendingCardsList');
+  if (!container) return;
+  if (pending.length === 0) { container.innerHTML = '<p>No pending cards</p>'; return; }
+  container.innerHTML = pending.map(card => `
+    <div class="admin-card">
+      <div><strong>${card.brand}</strong> — $${card.value}<br/>
+      <small>Payout: $${card.payout} (${card.rate}%)<br/>
+      Code: ${card.code}<br/>
+      Seller: ${card.sellerEmail}<br/>
+      Remarks: ${card.remarks || 'None'}</small></div>
+      <div style="margin-top:0.5rem">
+        <button class="admin-approve" onclick="approveCard(${card.id})">Approve</button>
+        <button class="admin-reject" onclick="rejectCard(${card.id})">Reject</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function approveCard(cardId) {
+  let pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
+  const card = pending.find(c => c.id === cardId);
+  if (card) {
+    let wallet = localStorage.getItem(`wallet_${card.sellerEmail}`) || '0';
+    wallet = parseFloat(wallet) + parseFloat(card.payout);
+    localStorage.setItem(`wallet_${card.sellerEmail}`, wallet);
+    const newPending = pending.filter(c => c.id !== cardId);
+    localStorage.setItem('pendingCards', JSON.stringify(newPending));
+    alert(`✅ Approved $${card.payout} added to ${card.sellerEmail}'s wallet`);
+    renderAdminPending();
+  }
+}
+
+function rejectCard(cardId) {
+  let pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
+  const newPending = pending.filter(c => c.id !== cardId);
+  localStorage.setItem('pendingCards', JSON.stringify(newPending));
+  alert('Card rejected');
+  renderAdminPending();
+}
+
+function renderWithdrawalRequests() {
+  const requests = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
+  const container = document.getElementById('withdrawalRequestsList');
+  if (!container) return;
+  if (requests.length === 0) { container.innerHTML = '<p>No withdrawal requests</p>'; return; }
+  container.innerHTML = requests.map(req => `
+    <div class="admin-card">
+      <div><strong>${req.email}</strong><br/>Amount: $${req.amount}<br/>Status: ${req.status}</div>
+      ${req.status === 'pending' ? `<button class="admin-approve" onclick="processWithdrawal('${req.email}', ${req.amount})">Mark Paid</button>` : ''}
+    </div>
+  `).join('');
+}
+
+function processWithdrawal(email, amount) {
+  let requests = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
+  const updated = requests.map(r => r.email === email && r.amount === amount ? { ...r, status: 'completed' } : r);
+  localStorage.setItem('withdrawalRequests', JSON.stringify(updated));
+  let wallet = localStorage.getItem(`wallet_${email}`) || '0';
+  const newBalance = parseFloat(wallet) - amount;
+  localStorage.setItem(`wallet_${email}`, newBalance);
+  alert(`Withdrawal processed for ${email}`);
+  renderWithdrawalRequests();
+}
+
+if (window.location.hash === '#admin') loadAdminPanel();
+</script>
+</body>
+</html>
