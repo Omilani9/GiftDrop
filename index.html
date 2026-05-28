@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>GiftDrop — Buy & Sell Gift Cards Worldwide</title>
+  <title>GiftDrop — Sell Gift Cards for Naira</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,6 +16,7 @@
       --accent-dark: #a8894e;
       --gray: #6b6b6b;
       --light-gray: #e8e6e1;
+      --green: #2d9e6b;
       --card-shadow: 0 2px 20px rgba(0,0,0,0.08);
     }
 
@@ -94,6 +95,8 @@
       margin-bottom: 1.5rem;
     }
 
+    .hero-badge::before { content: ''; width: 7px; height: 7px; background: var(--green); border-radius: 50%; }
+
     h1 {
       font-family: 'DM Serif Display', serif;
       font-size: clamp(2.2rem, 8vw, 3.5rem);
@@ -129,19 +132,6 @@
 
     .btn-primary:hover { background: var(--accent); }
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--black);
-      padding: 0.75rem 1.5rem;
-      border-radius: 100px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      border: 1.5px solid var(--light-gray);
-      transition: border-color 0.2s;
-      cursor: pointer;
-    }
-
     .brands {
       padding: 2rem 1.5rem;
       border-bottom: 1px solid var(--light-gray);
@@ -155,11 +145,15 @@
       gap: 1rem; flex-wrap: wrap;
     }
 
-    .brand-logos img {
-      height: 30px;
-      width: auto;
-      opacity: 0.6;
+    .brand-logos span {
+      font-family: 'DM Serif Display', serif;
+      font-size: 0.95rem;
+      color: var(--light-gray);
+      transition: color 0.2s;
+      cursor: default;
     }
+
+    .brand-logos span:hover { color: var(--gray); }
 
     .products, .sell-cards {
       padding: 4rem 1.5rem;
@@ -205,33 +199,15 @@
     }
 
     .card-banner {
-      height: 110px;
+      height: 90px;
       display: flex; align-items: center; justify-content: center;
-      background: #f8f8f8;
-      position: relative;
-    }
-
-    .card-banner img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
+      background: var(--cream);
+      font-size: 2.2rem;
     }
 
     .card-body { padding: 0.8rem 1rem 1rem; }
-    .card-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
-
-    .card-prices {
-      display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 0.8rem;
-    }
-
-    .price-tag {
-      background: var(--cream);
-      border: 1px solid var(--light-gray);
-      padding: 0.2rem 0.6rem;
-      border-radius: 100px;
-      font-size: 0.7rem;
-      font-weight: 500;
-    }
+    .card-name { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.25rem; }
+    .card-rate { font-size: 0.75rem; color: var(--green); font-weight: 500; margin-bottom: 0.6rem; }
 
     .card-buy {
       width: 100%;
@@ -243,7 +219,11 @@
       font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
     }
+
+    .card-buy:hover { background: var(--accent); }
 
     .how {
       padding: 4rem 1.5rem;
@@ -282,15 +262,23 @@
       display: flex; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
       font-size: 0.75rem;
+      color: var(--gray);
     }
 
-    /* ========== FULL PAGE SLIDE IN MODAL ========== */
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    /* ===== FULL PAGE SLIDE MODAL ===== */
     .full-modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: var(--white);
       z-index: 1000;
       overflow-y: auto;
@@ -298,63 +286,39 @@
       transition: transform 0.3s ease-out;
     }
 
-    .full-modal.open {
-      transform: translateX(0);
-    }
+    .full-modal.open { transform: translateX(0); }
 
     .modal-header {
-      position: sticky;
-      top: 0;
+      position: sticky; top: 0;
       background: var(--white);
       padding: 1rem 1.5rem;
       border-bottom: 1px solid var(--light-gray);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       z-index: 10;
     }
 
-    .modal-header h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
-    }
+    .modal-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; }
 
     .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: var(--gray);
-      line-height: 1;
+      background: none; border: none;
+      font-size: 1.8rem; cursor: pointer;
+      color: var(--gray); line-height: 1;
     }
 
-    .modal-content {
-      padding: 1.5rem;
-      padding-bottom: 3rem;
-    }
+    .modal-content { padding: 1.5rem; padding-bottom: 3rem; }
 
     .card-preview {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+      display: flex; align-items: center; gap: 1rem;
       background: var(--cream);
-      padding: 1rem;
-      border-radius: 16px;
+      padding: 1rem; border-radius: 16px;
       margin-bottom: 1.5rem;
     }
 
-    .card-preview img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
+    .card-preview-icon { font-size: 2.5rem; }
 
-    .card-preview h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
+    .card-preview h3 { font-size: 1rem; margin-bottom: 0.25rem; }
 
-    .card-preview .rate-badge {
+    .rate-badge {
       background: var(--accent);
       color: white;
       padding: 0.2rem 0.6rem;
@@ -367,25 +331,49 @@
       background: var(--cream);
       padding: 0.8rem 1rem;
       border-radius: 12px;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      margin-bottom: 0.8rem;
+      display: flex; justify-content: space-between; align-items: center;
     }
 
-    .info-label {
+    .info-label { font-size: 0.8rem; color: var(--gray); }
+    .info-value { font-weight: 600; font-size: 0.9rem; }
+
+    /* Currency selector */
+    .currency-selector {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .currency-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      border: 1.5px solid var(--light-gray);
+      background: var(--white);
       font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .currency-btn.active {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    .currency-rate-display {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      margin-bottom: 1.2rem;
       color: var(--gray);
     }
 
-    .info-value {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
+    .currency-rate-display strong { color: var(--green); }
 
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
+    .form-group { margin-bottom: 1.2rem; }
 
     .form-group label {
       display: block;
@@ -396,7 +384,7 @@
       text-transform: uppercase;
     }
 
-    .form-group input, 
+    .form-group input,
     .form-group textarea,
     .form-group select {
       width: 100%;
@@ -407,12 +395,12 @@
       font-family: inherit;
       outline: none;
       background: var(--white);
+      transition: border-color 0.2s;
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: var(--accent);
-    }
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--accent); }
 
     .file-upload {
       border: 1.5px dashed var(--light-gray);
@@ -421,16 +409,14 @@
       text-align: center;
       cursor: pointer;
       background: var(--cream);
-    }
-
-    .file-upload input {
-      display: none;
+      font-size: 0.85rem;
+      color: var(--gray);
     }
 
     .total-box {
       background: var(--black);
       color: var(--white);
-      padding: 1rem;
+      padding: 1.2rem 1rem;
       border-radius: 16px;
       text-align: center;
       margin: 1.5rem 0;
@@ -440,12 +426,19 @@
       font-size: 0.75rem;
       text-transform: uppercase;
       opacity: 0.7;
+      margin-bottom: 0.3rem;
     }
 
     .total-box .amount {
       font-size: 2rem;
       font-weight: 700;
       font-family: 'DM Serif Display', serif;
+    }
+
+    .total-box .sub-note {
+      font-size: 0.72rem;
+      opacity: 0.6;
+      margin-top: 0.3rem;
     }
 
     .submit-btn {
@@ -458,9 +451,14 @@
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 1rem;
+      font-family: inherit;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
     }
 
+    .submit-btn:hover { background: var(--accent-dark); }
+
+    /* ADMIN */
     .admin-panel {
       display: none;
       padding: 2rem 1rem;
@@ -473,6 +471,7 @@
       padding: 1rem;
       border-radius: 12px;
       margin-bottom: 1rem;
+      border: 1px solid var(--light-gray);
     }
 
     .admin-approve, .admin-reject {
@@ -481,10 +480,19 @@
       border: none;
       cursor: pointer;
       margin-right: 0.5rem;
+      font-family: inherit;
+      font-size: 0.85rem;
     }
 
     .admin-approve { background: #4caf50; color: white; }
     .admin-reject { background: #f44336; color: white; }
+
+    /* Range rate tag */
+    .range-note {
+      font-size: 0.7rem;
+      color: var(--gray);
+      margin-top: 0.2rem;
+    }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -497,39 +505,34 @@
 <nav>
   <a href="#" class="logo">Gift<span>Drop</span></a>
   <ul class="nav-links">
-    <li><a href="#products">Buy</a></li>
     <li><a href="#sell">Sell</a></li>
-    <li><a href="#" onclick="checkWallet(); return false;">💰</a></li>
-    <li><a href="#sell" class="nav-cta">Sell</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#" onclick="checkWallet(); return false;">💰 Wallet</a></li>
+    <li><a href="#sell" class="nav-cta">Sell Now</a></li>
   </ul>
 </nav>
 
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge">Instant payouts</div>
-    <h1>Sell <em>gift cards</em><br/>for cash.</h1>
-    <p class="hero-sub">Best rates. Fast approval. Get paid in minutes.</p>
+    <div class="hero-badge">Instant Naira payouts · Best rates</div>
+    <h1>Sell <em>gift cards</em><br/>for Naira cash.</h1>
+    <p class="hero-sub">Best rates in Nigeria. Fast approval in 5–90 minutes. Get paid directly to your bank.</p>
     <div class="hero-actions">
-      <a href="#sell" class="btn-primary">Sell Now</a>
+      <a href="#sell" class="btn-primary">Sell Now →</a>
     </div>
   </div>
 </section>
 
 <section class="brands">
-  <p>Trusted brands</p>
+  <p>Cards we accept</p>
   <div class="brand-logos" id="brandLogos"></div>
-</section>
-
-<section class="products" id="products">
-  <div class="section-header"><div><div class="section-label">Browse</div><h2 class="section-title">Popular Cards</h2></div></div>
-  <div class="cards-grid" id="cardsGrid"></div>
 </section>
 
 <section class="sell-cards" id="sell">
   <div style="text-align: center; margin-bottom: 2rem;">
     <div class="section-label">Sell</div>
-    <h2 class="section-title">Get Instant Cash</h2>
-    <p style="font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem;">Select your card below</p>
+    <h2 class="section-title">Current Rates (₦)</h2>
+    <p style="font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem;">Select your card to see full rates & sell</p>
   </div>
   <div class="cards-grid" id="sellRatesGrid"></div>
 </section>
@@ -537,44 +540,57 @@
 <section class="how" id="how">
   <div style="text-align:center"><div class="section-label">Process</div><h2 class="section-title">How It Works</h2></div>
   <div class="steps">
-    <div class="step"><div class="step-number">1</div><h3>Select Card</h3><p>Choose brand & currency</p></div>
+    <div class="step"><div class="step-number">1</div><h3>Select Card</h3><p>Choose your brand & currency</p></div>
     <div class="step"><div class="step-number">2</div><h3>Upload Details</h3><p>Add code, value & photo</p></div>
-    <div class="step"><div class="step-number">3</div><h3>Admin Reviews</h3><p>Fast approval</p></div>
-    <div class="step"><div class="step-number">4</div><h3>Get Paid</h3><p>Money in wallet</p></div>
+    <div class="step"><div class="step-number">3</div><h3>Admin Reviews</h3><p>Verified in 5–90 minutes</p></div>
+    <div class="step"><div class="step-number">4</div><h3>Get Paid</h3><p>Naira sent to your bank</p></div>
   </div>
 </section>
 
-<footer><a href="#" class="footer-logo">Gift<span>Drop</span></a><p>© 2025 GiftDrop</p></footer>
+<footer>
+  <a href="#" class="footer-logo">Gift<span>Drop</span></a>
+  <p>© 2025 GiftDrop NG. All rights reserved.</p>
+</footer>
 
-<!-- FULL PAGE SLIDE IN MODAL -->
+<!-- SELL MODAL -->
 <div id="sellModal" class="full-modal">
   <div class="modal-header">
     <h2>Sell Gift Card</h2>
     <button class="close-modal" onclick="closeSellModal()">&times;</button>
   </div>
   <div class="modal-content">
+
     <div class="card-preview" id="modalCardPreview">
-      <img id="modalCardImg" src="" alt="">
+      <div class="card-preview-icon" id="modalCardIcon">🎁</div>
       <div>
         <h3 id="modalCardName">Loading...</h3>
-        <span class="rate-badge" id="modalRate">0% Rate</span>
+        <span class="rate-badge" id="modalRate">₦0 / $1</span>
       </div>
     </div>
 
     <div class="info-row">
-      <span class="info-label">💰 Admin Fee Range</span>
-      <span class="info-value">$10 - $10,000</span>
+      <span class="info-label">💰 Card Value Range</span>
+      <span class="info-value">$5 – $10,000</span>
     </div>
     <div class="info-row">
       <span class="info-label">⏱️ Wait Time</span>
-      <span class="info-value">3-5 minutes</span>
+      <span class="info-value">5 – 90 Minutes</span>
+    </div>
+
+    <!-- Currency Selector -->
+    <div class="form-group">
+      <label>Select Currency</label>
+      <div class="currency-selector" id="currencySelector"></div>
+      <div class="currency-rate-display" id="currencyRateDisplay">
+        Rate: <strong id="currentRateDisplay">—</strong>
+      </div>
     </div>
 
     <div class="form-group">
       <label>📷 Upload Card Image</label>
       <div class="file-upload" onclick="document.getElementById('cardImageInput').click()">
-        <input type="file" id="cardImageInput" accept="image/*" style="display:none">
-        <span>📸 Click to upload image of gift card</span>
+        <input type="file" id="cardImageInput" accept="image/*" style="display:none" onchange="updateImageLabel(this)">
+        <span id="imageLabel">📸 Tap to upload photo of gift card</span>
       </div>
     </div>
 
@@ -585,12 +601,13 @@
 
     <div class="form-group">
       <label>💵 Face Value (Amount on Card)</label>
-      <input type="number" id="faceValueInput" placeholder="Enter amount on card" oninput="calculatePayoutModal()">
+      <input type="number" id="faceValueInput" placeholder="Enter card amount e.g. 100" oninput="calculatePayoutModal()">
     </div>
 
     <div class="total-box">
       <div class="label">You will receive</div>
-      <div class="amount" id="modalTotalPayout">$0.00</div>
+      <div class="amount" id="modalTotalPayout">₦0</div>
+      <div class="sub-note" id="modalPayoutNote">Enter card value above to see payout</div>
     </div>
 
     <div class="form-group">
@@ -605,96 +622,270 @@
 <!-- Admin Panel -->
 <div id="adminPanel" class="admin-panel">
   <div style="max-width: 600px; margin: 0 auto;">
-    <h2 style="font-family: 'DM Serif Display', serif;">Admin</h2>
-    <button onclick="closeAdminPanel()" style="margin-bottom: 1rem;">← Back</button>
-    <h3>Pending Cards</h3>
+    <h2 style="font-family: 'DM Serif Display', serif; margin-bottom: 1rem;">Admin Panel</h2>
+    <button onclick="closeAdminPanel()" style="margin-bottom: 1.5rem; padding: 0.5rem 1rem; border-radius: 100px; border: 1px solid var(--light-gray); background: white; cursor: pointer;">← Back to Site</button>
+    <h3 style="margin-bottom: 0.75rem;">Pending Cards</h3>
     <div id="pendingCardsList"></div>
-    <h3 style="margin-top: 2rem;">Withdrawals</h3>
+    <h3 style="margin-top: 2rem; margin-bottom: 0.75rem;">Withdrawal Requests</h3>
     <div id="withdrawalRequestsList"></div>
   </div>
 </div>
 
 <script>
-// ============ BRAND DATA ============
-const brandCurrencies = {
-  "Amazon": { USD: 85, img: "amazon.png" },
-  "iTunes & Apple": { USD: 85, CAD: 80, AUD: 75, EUR: 82, GBP: 88, img: "itunes-apple.png" },
-  "Steam": { USD: 78, img: "steam.png" },
-  "PlayStation": { USD: 75, img: "playstation.png" },
-  "Roblox": { USD: 85, img: "roblox.png" },
-  "Google": { USD: 83, img: "google.png" },
-  "Netflix": { USD: 80, img: "netflix.png" },
-  "Spotify": { USD: 65, img: "spotify.png" },
-  "Sephora": { USD: 82, img: "sephora.png" },
-  "Nike": { USD: 73, img: "nike.png" },
-  "Walmart": { USD: 78, img: "walmart.png" },
-  "Target": { USD: 79, img: "target.png" },
-  "eBay": { USD: 76, img: "ebay.png" },
-  "Uber": { USD: 77, img: "uber.png" }
+// ============ BRAND DATA — Rates in ₦ per $1 equivalent ============
+const brandData = {
+  "Apple iTunes": {
+    icon: "🎵",
+    currencies: { USD: 1020, CAD: 640, AUD: 500, EUR: 850, GBP: 1100 }
+  },
+  "Razor Gold": {
+    icon: "🪙",
+    currencies: { USD: 1050, CAD: 750, AUD: 750, EUR: 930 }
+  },
+  "Steam": {
+    icon: "🕹️",
+    currencies: { USD: 850, CAD: 600, AUD: 620, EUR: 990, GBP: 1151 }
+  },
+  "Sephora": {
+    icon: "💄",
+    currencies: { USD: 850, CAD: 600 }
+  },
+  "Foot Locker": {
+    icon: "👟",
+    currencies: { USD: 900 }
+  },
+  "Xbox": {
+    icon: "🎮",
+    currencies: { USD: 900, CAD: 600, AUD: 550, EUR: 910, GBP: 1000 }
+  },
+  "Macy's": {
+    icon: "🛍️",
+    currencies: { USD: 900 }
+  },
+  "Amazon": {
+    icon: "📦",
+    currencies: { USD: 930, EUR: 1000, GBP: 1100 }
+  },
+  "Google Play": {
+    icon: "▶️",
+    currencies: { USD: 900, CAD: 500, AUD: 400, EUR: 720, GBP: 720 }
+  },
+  "GameStop": {
+    icon: "🎯",
+    currencies: { USD: 970 }
+  },
+  "DoorDash": {
+    icon: "🍔",
+    currencies: { USD: "700–900" }
+  },
+  "Dollar General": {
+    icon: "🏪",
+    currencies: { USD: 1000 }
+  },
+  "Nordstrom": {
+    icon: "👔",
+    currencies: { USD: "650–750" }
+  },
+  "Target": {
+    icon: "🎯",
+    currencies: { USD: "610–870" }
+  },
+  "Amex": {
+    icon: "💳",
+    currencies: { USD: 550 },
+    note: "Cards starting with 3779/3751 only"
+  },
+  "Vanilla": {
+    icon: "🍦",
+    currencies: { USD: "350–500", CAD: "370–510", AUD: "440–560" }
+  },
+  "eBay": {
+    icon: "🛒",
+    currencies: { USD: 700 }
+  },
+  "PlayStation": {
+    icon: "🎮",
+    currencies: { USD: 630, CAD: 340, AUD: 300, EUR: 600, GBP: 750 }
+  },
+  "Visa Gift Card": {
+    icon: "💳",
+    currencies: { USD: 730, CAD: 430 }
+  },
+  "Walmart Visa": {
+    icon: "🏬",
+    currencies: { USD: 830 }
+  },
+  "Nike": {
+    icon: "✔️",
+    currencies: { USD: "780–930" }
+  },
+  "Lululemon": {
+    icon: "🧘",
+    currencies: { USD: 960 }
+  },
+  "CVS Pharmacy": {
+    icon: "💊",
+    currencies: { USD: 1030 }
+  },
+  "Walmart": {
+    icon: "🏬",
+    currencies: { USD: "530–710" }
+  },
+  "Roblox": {
+    icon: "🟥",
+    currencies: { USD: 550, CAD: 350, AUD: 300, EUR: 530, GBP: 637 }
+  },
+  "Mastercard": {
+    icon: "💳",
+    currencies: { USD: "560–750" }
+  },
+  "Home Depot": {
+    icon: "🔨",
+    currencies: { USD: 800 }
+  },
+  "Uber": {
+    icon: "🚗",
+    currencies: { USD: 700 }
+  },
+  "Netspend": {
+    icon: "💵",
+    currencies: { USD: "710–930" }
+  }
 };
 
-const brandList = Object.keys(brandCurrencies);
+const brandList = Object.keys(brandData);
 
-function getBrandImage(brand) {
-  return `images/${brandCurrencies[brand].img || brand.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`;
-}
-
-// Render brand logos
+// ---- Render brand name strip ----
 const brandLogosDiv = document.getElementById('brandLogos');
-if (brandLogosDiv) {
-  brandList.slice(0, 8).forEach(brand => {
-    const img = document.createElement('img');
-    img.src = getBrandImage(brand);
-    img.alt = brand;
-    img.onerror = function() { this.style.display = 'none'; };
-    brandLogosDiv.appendChild(img);
-  });
+brandList.slice(0, 10).forEach(brand => {
+  const span = document.createElement('span');
+  span.textContent = brand;
+  brandLogosDiv.appendChild(span);
+});
+
+// ---- Render sell grid ----
+function getRateDisplay(currencies) {
+  const first = Object.values(currencies)[0];
+  const cur = Object.keys(currencies)[0];
+  return `₦${first} / ${cur}`;
 }
 
-// Render buy grid
-const buyGrid = document.getElementById('cardsGrid');
-if (buyGrid) {
-  brandList.slice(0, 8).forEach(brand => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML = `<div class="card-banner"><img src="${getBrandImage(brand)}" alt="${brand}" onerror="this.src='images/placeholder.png'"></div><div class="card-body"><div class="card-name">${brand}</div><button class="card-buy" onclick="alert('Buy coming soon')">Buy</button></div>`;
-    buyGrid.appendChild(card);
-  });
-}
-
-// Render sell grid
 const sellGrid = document.getElementById('sellRatesGrid');
-if (sellGrid) {
-  brandList.forEach(brand => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML = `<div class="card-banner"><img src="${getBrandImage(brand)}" alt="${brand}" onerror="this.src='images/placeholder.png'"></div><div class="card-body"><div class="card-name">${brand}</div><button class="card-buy" onclick="openSellModal('${brand}')">Sell →</button></div>`;
-    sellGrid.appendChild(card);
-  });
-}
+brandList.forEach(brand => {
+  const data = brandData[brand];
+  const currencies = Object.keys(data.currencies);
+  const firstRate = data.currencies[currencies[0]];
 
-// Modal variables
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <div class="card-banner">${data.icon}</div>
+    <div class="card-body">
+      <div class="card-name">${brand}</div>
+      <div class="card-rate">₦${firstRate} / ${currencies[0]}</div>
+      ${currencies.length > 1 ? `<div class="range-note">+${currencies.length - 1} more currencies</div>` : ''}
+      <button class="card-buy" onclick="openSellModal('${brand}')">Sell →</button>
+    </div>
+  `;
+  sellGrid.appendChild(card);
+});
+
+// ---- Modal state ----
 let currentBrand = '';
-let currentRate = 85;
+let currentCurrency = 'USD';
+let currentRateValue = 0;
+let isRangeRate = false;
 
 function openSellModal(brand) {
   currentBrand = brand;
-  const rates = brandCurrencies[brand];
-  // Get first available rate (default USD)
-  const firstCurrency = Object.keys(rates).find(k => k !== 'img');
-  currentRate = rates[firstCurrency] || 85;
-  
-  document.getElementById('modalCardName').innerHTML = brand;
-  document.getElementById('modalCardImg').src = getBrandImage(brand);
-  document.getElementById('modalRate').innerHTML = `${currentRate}% Rate`;
+  const data = brandData[brand];
+  const currencies = Object.keys(data.currencies);
+  currentCurrency = currencies[0];
+  currentRateValue = data.currencies[currentCurrency];
+  isRangeRate = typeof currentRateValue === 'string';
+
+  // Set preview
+  document.getElementById('modalCardIcon').textContent = data.icon;
+  document.getElementById('modalCardName').textContent = brand;
+
+  // Build currency buttons
+  const selector = document.getElementById('currencySelector');
+  selector.innerHTML = '';
+  currencies.forEach((cur, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'currency-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = cur;
+    btn.onclick = () => selectCurrency(cur, btn);
+    selector.appendChild(btn);
+  });
+
+  updateRateDisplay();
   document.getElementById('faceValueInput').value = '';
   document.getElementById('cardCodeInput').value = '';
   document.getElementById('userRemarks').value = '';
-  document.getElementById('modalTotalPayout').innerHTML = '$0.00';
   document.getElementById('cardImageInput').value = '';
-  
+  document.getElementById('imageLabel').textContent = '📸 Tap to upload photo of gift card';
+  document.getElementById('modalTotalPayout').textContent = '₦0';
+  document.getElementById('modalPayoutNote').textContent = 'Enter card value above to see payout';
+
   document.getElementById('sellModal').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function selectCurrency(cur, btn) {
+  currentCurrency = cur;
+  currentRateValue = brandData[currentBrand].currencies[cur];
+  isRangeRate = typeof currentRateValue === 'string';
+
+  document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  updateRateDisplay();
+  calculatePayoutModal();
+}
+
+function updateRateDisplay() {
+  const rate = brandData[currentBrand].currencies[currentCurrency];
+  document.getElementById('modalRate').textContent = `₦${rate} / ${currentCurrency}`;
+
+  const noteEl = brandData[currentBrand].note;
+  const extra = noteEl ? ` · ${noteEl}` : '';
+  document.getElementById('currentRateDisplay').textContent =
+    isRangeRate
+      ? `₦${rate} per ${currentCurrency}${extra}`
+      : `₦${rate} per ${currentCurrency}${extra}`;
+
+  document.getElementById('currencyRateDisplay').innerHTML =
+    `Rate: <strong>₦${rate} per 1 ${currentCurrency}</strong>${extra ? ' <span style="font-size:0.72rem;color:var(--gray)">· ' + extra + '</span>' : ''}`;
+}
+
+function calculatePayoutModal() {
+  const faceValue = parseFloat(document.getElementById('faceValueInput').value) || 0;
+  const rate = brandData[currentBrand]?.currencies[currentCurrency];
+
+  if (!faceValue || !rate) {
+    document.getElementById('modalTotalPayout').textContent = '₦0';
+    document.getElementById('modalPayoutNote').textContent = 'Enter card value above to see payout';
+    return;
+  }
+
+  if (typeof rate === 'string') {
+    // Range rate e.g. "700–900"
+    const [low, high] = rate.split('–').map(Number);
+    const payoutLow = (faceValue * low).toLocaleString('en-NG');
+    const payoutHigh = (faceValue * high).toLocaleString('en-NG');
+    document.getElementById('modalTotalPayout').textContent = `₦${payoutLow} – ₦${payoutHigh}`;
+    document.getElementById('modalPayoutNote').textContent = `Based on ₦${rate} rate range`;
+  } else {
+    const payout = (faceValue * rate).toLocaleString('en-NG');
+    document.getElementById('modalTotalPayout').textContent = `₦${payout}`;
+    document.getElementById('modalPayoutNote').textContent = `At ₦${rate} per ${currentCurrency}`;
+  }
+}
+
+function updateImageLabel(input) {
+  const label = document.getElementById('imageLabel');
+  label.textContent = input.files[0] ? `✅ ${input.files[0].name}` : '📸 Tap to upload photo of gift card';
 }
 
 function closeSellModal() {
@@ -702,64 +893,59 @@ function closeSellModal() {
   document.body.style.overflow = '';
 }
 
-function calculatePayoutModal() {
-  const faceValue = parseFloat(document.getElementById('faceValueInput').value) || 0;
-  const payout = (faceValue * currentRate / 100).toFixed(2);
-  document.getElementById('modalTotalPayout').innerHTML = `$${payout}`;
-}
-
 function submitCardSale() {
   const faceValue = parseFloat(document.getElementById('faceValueInput').value);
   const cardCode = document.getElementById('cardCodeInput').value.trim();
   const remarks = document.getElementById('userRemarks').value;
   const imageFile = document.getElementById('cardImageInput').files[0];
-  
-  if (!faceValue || faceValue <= 0) {
-    alert('Please enter the face value of the card');
-    return;
+
+  if (!faceValue || faceValue <= 0) { alert('Please enter the face value of the card.'); return; }
+  if (!cardCode) { alert('Please enter the card code/PIN.'); return; }
+
+  const rate = brandData[currentBrand].currencies[currentCurrency];
+  let payoutText;
+  if (typeof rate === 'string') {
+    const [low, high] = rate.split('–').map(Number);
+    payoutText = `₦${(faceValue * low).toLocaleString()} – ₦${(faceValue * high).toLocaleString()}`;
+  } else {
+    payoutText = `₦${(faceValue * rate).toLocaleString()}`;
   }
-  if (!cardCode) {
-    alert('Please enter the card code/PIN');
-    return;
-  }
-  
-  const payout = (faceValue * currentRate / 100).toFixed(2);
-  const sellerEmail = prompt('Enter your email (for payment notification):');
+
+  const sellerEmail = prompt('Enter your email (for payout notification):');
   if (!sellerEmail) return;
-  
-  // Handle image (convert to base64 for demo)
+
+  const submission = {
+    id: Date.now(),
+    brand: currentBrand,
+    currency: currentCurrency,
+    rate: rate,
+    value: faceValue,
+    code: cardCode,
+    remarks,
+    payout: payoutText,
+    sellerEmail,
+    status: 'pending',
+    date: new Date().toLocaleString()
+  };
+
   if (imageFile) {
     const reader = new FileReader();
-    reader.onload = function(e) {
-      saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, e.target.result);
+    reader.onload = e => {
+      submission.image = e.target.result;
+      saveSubmission(submission, payoutText);
     };
     reader.readAsDataURL(imageFile);
   } else {
-    saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, null);
+    saveSubmission(submission, payoutText);
   }
 }
 
-function saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, imageData) {
-  const pendingCard = {
-    id: Date.now(),
-    brand: currentBrand,
-    currency: 'USD',
-    value: faceValue,
-    code: cardCode,
-    remarks: remarks,
-    payout: payout,
-    rate: currentRate,
-    status: 'pending',
-    sellerEmail: sellerEmail,
-    image: imageData,
-    date: new Date().toISOString()
-  };
-  
+function saveSubmission(submission, payoutText) {
   let pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
-  pending.push(pendingCard);
+  pending.push(submission);
   localStorage.setItem('pendingCards', JSON.stringify(pending));
-  
-  alert(`✅ ${currentBrand} card submitted!\nValue: $${faceValue}\nYou'll receive: $${payout}\nAdmin will review shortly.`);
+
+  alert(`✅ Submitted!\n\nCard: ${submission.brand} (${submission.currency})\nValue: ${submission.currency} ${submission.value}\nExpected Payout: ${payoutText}\n\nAdmin will review in 5–90 minutes.`);
   closeSellModal();
 }
 
@@ -767,25 +953,21 @@ function saveCardSubmission(faceValue, cardCode, remarks, payout, sellerEmail, i
 function checkWallet() {
   const email = prompt('Enter your email:');
   if (!email) return;
-  const balance = localStorage.getItem(`wallet_${email}`) || '0';
-  alert(`💰 Balance: $${parseFloat(balance).toFixed(2)}`);
-  if (parseFloat(balance) > 0 && confirm('Request withdrawal?')) {
+  const balance = parseFloat(localStorage.getItem(`wallet_${email}`) || '0');
+  alert(`💰 Wallet Balance: ₦${balance.toLocaleString('en-NG')}`);
+  if (balance > 0 && confirm('Request withdrawal?')) {
     let requests = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
-    requests.push({ email, amount: parseFloat(balance), status: 'pending' });
+    requests.push({ email, amount: balance, status: 'pending', date: new Date().toLocaleString() });
     localStorage.setItem('withdrawalRequests', JSON.stringify(requests));
-    alert('Withdrawal request sent to admin');
+    localStorage.setItem(`wallet_${email}`, 0);
+    alert('Withdrawal request sent to admin.');
   }
 }
 
-// Admin functions
+// ---- Admin ----
 function loadAdminPanel() {
-  document.querySelector('nav').style.display = 'none';
-  document.querySelector('.hero').style.display = 'none';
-  document.querySelector('.brands').style.display = 'none';
-  document.querySelector('.products').style.display = 'none';
-  document.querySelector('.sell-cards').style.display = 'none';
-  document.querySelector('.how').style.display = 'none';
-  document.querySelector('footer').style.display = 'none';
+  ['nav','footer'].forEach(tag => document.querySelector(tag).style.display = 'none');
+  ['.hero','.brands','.sell-cards','.how'].forEach(sel => document.querySelector(sel).style.display = 'none');
   document.getElementById('adminPanel').style.display = 'block';
   renderAdminPending();
   renderWithdrawalRequests();
@@ -793,30 +975,30 @@ function loadAdminPanel() {
 
 function closeAdminPanel() {
   document.querySelector('nav').style.display = 'flex';
-  document.querySelector('.hero').style.display = 'flex';
-  document.querySelector('.brands').style.display = 'block';
-  document.querySelector('.products').style.display = 'block';
-  document.querySelector('.sell-cards').style.display = 'block';
-  document.querySelector('.how').style.display = 'block';
   document.querySelector('footer').style.display = 'flex';
+  ['.hero','.brands','.sell-cards','.how'].forEach(sel => document.querySelector(sel).style.display = 'block');
+  document.querySelector('.hero').style.display = 'flex';
   document.getElementById('adminPanel').style.display = 'none';
 }
 
 function renderAdminPending() {
   const pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
   const container = document.getElementById('pendingCardsList');
-  if (!container) return;
-  if (pending.length === 0) { container.innerHTML = '<p>No pending cards</p>'; return; }
+  if (!pending.length) { container.innerHTML = '<p style="color:var(--gray)">No pending cards.</p>'; return; }
   container.innerHTML = pending.map(card => `
     <div class="admin-card">
-      <div><strong>${card.brand}</strong> — $${card.value}<br/>
-      <small>Payout: $${card.payout} (${card.rate}%)<br/>
-      Code: ${card.code}<br/>
-      Seller: ${card.sellerEmail}<br/>
-      Remarks: ${card.remarks || 'None'}</small></div>
-      <div style="margin-top:0.5rem">
-        <button class="admin-approve" onclick="approveCard(${card.id})">Approve</button>
-        <button class="admin-reject" onclick="rejectCard(${card.id})">Reject</button>
+      <strong>${card.brand}</strong> (${card.currency} ${card.value})<br/>
+      <small style="color:var(--gray)">
+        Rate: ₦${card.rate} · Payout: ${card.payout}<br/>
+        Code: ${card.code}<br/>
+        Seller: ${card.sellerEmail}<br/>
+        Date: ${card.date}<br/>
+        Remarks: ${card.remarks || 'None'}
+      </small>
+      ${card.image ? `<br/><img src="${card.image}" style="max-width:100%;border-radius:8px;margin-top:0.5rem;">` : ''}
+      <div style="margin-top:0.75rem">
+        <button class="admin-approve" onclick="approveCard(${card.id})">✅ Approve</button>
+        <button class="admin-reject" onclick="rejectCard(${card.id})">❌ Reject</button>
       </div>
     </div>
   `).join('');
@@ -826,45 +1008,49 @@ function approveCard(cardId) {
   let pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
   const card = pending.find(c => c.id === cardId);
   if (card) {
-    let wallet = localStorage.getItem(`wallet_${card.sellerEmail}`) || '0';
-    wallet = parseFloat(wallet) + parseFloat(card.payout);
+    // For range rates, credit the average
+    let creditAmount = 0;
+    if (typeof card.rate === 'string') {
+      const [low, high] = card.rate.split('–').map(Number);
+      creditAmount = card.value * ((low + high) / 2);
+    } else {
+      creditAmount = card.value * card.rate;
+    }
+    let wallet = parseFloat(localStorage.getItem(`wallet_${card.sellerEmail}`) || '0');
+    wallet += creditAmount;
     localStorage.setItem(`wallet_${card.sellerEmail}`, wallet);
-    const newPending = pending.filter(c => c.id !== cardId);
-    localStorage.setItem('pendingCards', JSON.stringify(newPending));
-    alert(`✅ Approved $${card.payout} added to ${card.sellerEmail}'s wallet`);
+    localStorage.setItem('pendingCards', JSON.stringify(pending.filter(c => c.id !== cardId)));
+    alert(`✅ Approved! ₦${creditAmount.toLocaleString('en-NG')} added to ${card.sellerEmail}'s wallet.`);
     renderAdminPending();
   }
 }
 
 function rejectCard(cardId) {
+  if (!confirm('Reject this card?')) return;
   let pending = JSON.parse(localStorage.getItem('pendingCards') || '[]');
-  const newPending = pending.filter(c => c.id !== cardId);
-  localStorage.setItem('pendingCards', JSON.stringify(newPending));
-  alert('Card rejected');
+  localStorage.setItem('pendingCards', JSON.stringify(pending.filter(c => c.id !== cardId)));
+  alert('Card rejected.');
   renderAdminPending();
 }
 
 function renderWithdrawalRequests() {
   const requests = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
   const container = document.getElementById('withdrawalRequestsList');
-  if (!container) return;
-  if (requests.length === 0) { container.innerHTML = '<p>No withdrawal requests</p>'; return; }
-  container.innerHTML = requests.map(req => `
+  if (!requests.length) { container.innerHTML = '<p style="color:var(--gray)">No withdrawal requests.</p>'; return; }
+  container.innerHTML = requests.map((req, i) => `
     <div class="admin-card">
-      <div><strong>${req.email}</strong><br/>Amount: $${req.amount}<br/>Status: ${req.status}</div>
-      ${req.status === 'pending' ? `<button class="admin-approve" onclick="processWithdrawal('${req.email}', ${req.amount})">Mark Paid</button>` : ''}
+      <strong>${req.email}</strong><br/>
+      <small style="color:var(--gray)">Amount: ₦${Number(req.amount).toLocaleString('en-NG')} · Status: ${req.status} · ${req.date}</small>
+      ${req.status === 'pending' ? `<div style="margin-top:0.5rem"><button class="admin-approve" onclick="processWithdrawal(${i})">Mark Paid</button></div>` : ''}
     </div>
   `).join('');
 }
 
-function processWithdrawal(email, amount) {
+function processWithdrawal(index) {
   let requests = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
-  const updated = requests.map(r => r.email === email && r.amount === amount ? { ...r, status: 'completed' } : r);
-  localStorage.setItem('withdrawalRequests', JSON.stringify(updated));
-  let wallet = localStorage.getItem(`wallet_${email}`) || '0';
-  const newBalance = parseFloat(wallet) - amount;
-  localStorage.setItem(`wallet_${email}`, newBalance);
-  alert(`Withdrawal processed for ${email}`);
+  requests[index].status = 'completed';
+  localStorage.setItem('withdrawalRequests', JSON.stringify(requests));
+  alert('Withdrawal marked as paid.');
   renderWithdrawalRequests();
 }
 
