@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>GiftDrop — Sell Gift Cards for Naira</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#c8a96e"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="GiftDrop"/>
+  <meta name="description" content="Sell gift cards for Naira. Best rates, fast approval, instant payout."/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,7 +61,7 @@
     .logo span { color: var(--accent); }
 
     .nav-links {
-      display: flex; gap: 1.2rem; list-style: none;
+      display: flex; gap: 0.8rem; list-style: none;
       align-items: center;
     }
 
@@ -507,8 +518,7 @@
   <ul class="nav-links">
     <li><a href="#products">Buy</a></li>
     <li><a href="#sell">Sell</a></li>
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#" onclick="checkWallet(); return false;">💰 Wallet</a></li>
+    <li><a href="#" onclick="checkWallet(); return false;">💰</a></li>
     <li><a href="#sell" class="nav-cta">Sell Now</a></li>
   </ul>
 </nav>
@@ -646,120 +656,120 @@
 // ============ BRAND DATA — Rates in ₦ per $1 equivalent ============
 const brandData = {
   "Apple iTunes": {
-    icon: "🎵",
+    icon: "🎵", img: "images/itunes.png",
     currencies: { USD: 1020, CAD: 640, AUD: 500, EUR: 850, GBP: 1100 }
   },
   "Razor Gold": {
-    icon: "🪙",
+    icon: "🪙", img: "images/razorgold.png",
     currencies: { USD: 1050, CAD: 750, AUD: 750, EUR: 930 }
   },
   "Steam": {
-    icon: "🕹️",
+    icon: "🕹️", img: "images/steam.png",
     currencies: { USD: 850, CAD: 600, AUD: 620, EUR: 990, GBP: 1151 }
   },
   "Sephora": {
-    icon: "💄",
+    icon: "💄", img: "images/sephora.png",
     currencies: { USD: 850, CAD: 600 }
   },
   "Foot Locker": {
-    icon: "👟",
+    icon: "👟", img: "images/footlocker.png",
     currencies: { USD: 900 }
   },
   "Xbox": {
-    icon: "🎮",
+    icon: "🎮", img: "images/xbox.png",
     currencies: { USD: 900, CAD: 600, AUD: 550, EUR: 910, GBP: 1000 }
   },
   "Macy's": {
-    icon: "🛍️",
+    icon: "🛍️", img: "images/macys.png",
     currencies: { USD: 900 }
   },
   "Amazon": {
-    icon: "📦",
+    icon: "📦", img: "images/amazon.png",
     currencies: { USD: 930, EUR: 1000, GBP: 1100 }
   },
   "Google Play": {
-    icon: "▶️",
+    icon: "▶️", img: "images/google.png",
     currencies: { USD: 900, CAD: 500, AUD: 400, EUR: 720, GBP: 720 }
   },
   "GameStop": {
-    icon: "🎯",
+    icon: "🎯", img: "images/gamestop.png",
     currencies: { USD: 970 }
   },
   "DoorDash": {
-    icon: "🍔",
+    icon: "🍔", img: "images/doordash.png",
     currencies: { USD: "700–900" }
   },
   "Dollar General": {
-    icon: "🏪",
+    icon: "🏪", img: "images/dollargeneral.png",
     currencies: { USD: 1000 }
   },
   "Nordstrom": {
-    icon: "👔",
+    icon: "👔", img: "images/nordstrom.png",
     currencies: { USD: "650–750" }
   },
   "Target": {
-    icon: "🎯",
+    icon: "🎯", img: "images/target.png",
     currencies: { USD: "610–870" }
   },
   "Amex": {
-    icon: "💳",
+    icon: "💳", img: "images/amex.png",
     currencies: { USD: 550 },
     note: "Cards starting with 3779/3751 only"
   },
   "Vanilla": {
-    icon: "🍦",
+    icon: "🍦", img: "images/vanilla.png",
     currencies: { USD: "350–500", CAD: "370–510", AUD: "440–560" }
   },
   "eBay": {
-    icon: "🛒",
+    icon: "🛒", img: "images/ebay.png",
     currencies: { USD: 700 }
   },
   "PlayStation": {
-    icon: "🎮",
+    icon: "🎮", img: "images/playstation.png",
     currencies: { USD: 630, CAD: 340, AUD: 300, EUR: 600, GBP: 750 }
   },
   "Visa Gift Card": {
-    icon: "💳",
+    icon: "💳", img: "images/visa.png",
     currencies: { USD: 730, CAD: 430 }
   },
   "Walmart Visa": {
-    icon: "🏬",
+    icon: "🏬", img: "images/walmart-visa.png",
     currencies: { USD: 830 }
   },
   "Nike": {
-    icon: "✔️",
+    icon: "✔️", img: "images/nike.png",
     currencies: { USD: "780–930" }
   },
   "Lululemon": {
-    icon: "🧘",
+    icon: "🧘", img: "images/lululemon.png",
     currencies: { USD: 960 }
   },
   "CVS Pharmacy": {
-    icon: "💊",
+    icon: "💊", img: "images/cvs.png",
     currencies: { USD: 1030 }
   },
   "Walmart": {
-    icon: "🏬",
+    icon: "🏬", img: "images/walmart.png",
     currencies: { USD: "530–710" }
   },
   "Roblox": {
-    icon: "🟥",
+    icon: "🟥", img: "images/roblox.png",
     currencies: { USD: 550, CAD: 350, AUD: 300, EUR: 530, GBP: 637 }
   },
   "Mastercard": {
-    icon: "💳",
+    icon: "💳", img: "images/mastercard.png",
     currencies: { USD: "560–750" }
   },
   "Home Depot": {
-    icon: "🔨",
+    icon: "🔨", img: "images/homedepot.png",
     currencies: { USD: 800 }
   },
   "Uber": {
-    icon: "🚗",
+    icon: "🚗", img: "images/uber.png",
     currencies: { USD: 700 }
   },
   "Netspend": {
-    icon: "💵",
+    icon: "💵", img: "images/netspend.png",
     currencies: { USD: "710–930" }
   }
 };
@@ -782,7 +792,10 @@ if (buyGrid) {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <div class="card-banner">${data.icon}</div>
+      <div class="card-banner">
+        <img src="${data.img}" alt="${brand}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width:70px;height:70px;object-fit:contain;">
+        <span style="display:none;font-size:2.2rem;">${data.icon}</span>
+      </div>
       <div class="card-body">
         <div class="card-name">${brand}</div>
         <button class="card-buy" onclick="alert('Buy coming soon!')">Buy</button>
@@ -808,7 +821,10 @@ brandList.forEach(brand => {
   const card = document.createElement('div');
   card.className = 'product-card';
   card.innerHTML = `
-    <div class="card-banner">${data.icon}</div>
+    <div class="card-banner">
+      <img src="${data.img}" alt="${brand}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="width:70px;height:70px;object-fit:contain;">
+      <span style="display:none;font-size:2.2rem;">${data.icon}</span>
+    </div>
     <div class="card-body">
       <div class="card-name">${brand}</div>
       <div class="card-rate">₦${firstRate} / ${currencies[0]}</div>
@@ -1082,6 +1098,55 @@ function processWithdrawal(index) {
 }
 
 if (window.location.hash === '#admin') loadAdminPanel();
+</script>
+<!-- PWA Install Banner -->
+<div id="installBanner" style="display:none; position:fixed; bottom:1.5rem; left:1rem; right:1rem; background:var(--black); color:var(--white); padding:1rem 1.2rem; border-radius:16px; z-index:999; display:none; align-items:center; justify-content:space-between; gap:1rem; box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+  <div>
+    <div style="font-weight:600; font-size:0.9rem;">Add GiftDrop to Home Screen</div>
+    <div style="font-size:0.75rem; opacity:0.7; margin-top:0.2rem;">Use it like a real app, works offline too</div>
+  </div>
+  <div style="display:flex; gap:0.5rem; flex-shrink:0;">
+    <button onclick="dismissInstall()" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:white; padding:0.4rem 0.8rem; border-radius:100px; font-size:0.8rem; cursor:pointer;">Later</button>
+    <button onclick="installApp()" style="background:var(--accent); border:none; color:var(--black); padding:0.4rem 0.9rem; border-radius:100px; font-size:0.8rem; font-weight:600; cursor:pointer;">Install</button>
+  </div>
+</div>
+
+<script>
+// Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered'))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+
+// Install prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('installBanner');
+  banner.style.display = 'flex';
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      document.getElementById('installBanner').style.display = 'none';
+    });
+  }
+}
+
+function dismissInstall() {
+  document.getElementById('installBanner').style.display = 'none';
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').style.display = 'none';
+});
 </script>
 </body>
 </html>
