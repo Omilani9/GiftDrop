@@ -505,6 +505,7 @@
 <nav>
   <a href="#" class="logo">Gift<span>Drop</span></a>
   <ul class="nav-links">
+    <li><a href="#products">Buy</a></li>
     <li><a href="#sell">Sell</a></li>
     <li><a href="#how">How it works</a></li>
     <li><a href="#" onclick="checkWallet(); return false;">💰 Wallet</a></li>
@@ -516,7 +517,7 @@
   <div class="hero-content">
     <div class="hero-badge">Instant Naira payouts · Best rates</div>
     <h1>Sell <em>gift cards</em><br/>for Naira cash.</h1>
-    <p class="hero-sub">Best rates in Nigeria. Fast approval in 5–90 minutes. Get paid directly to your bank.</p>
+    <p class="hero-sub">Best rates. Fast approval. Get paid in minutes.</p>
     <div class="hero-actions">
       <a href="#sell" class="btn-primary">Sell Now →</a>
     </div>
@@ -526,6 +527,16 @@
 <section class="brands">
   <p>Cards we accept</p>
   <div class="brand-logos" id="brandLogos"></div>
+</section>
+
+<section class="products" id="products">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Browse</div>
+      <h2 class="section-title">Popular Cards</h2>
+    </div>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
 </section>
 
 <section class="sell-cards" id="sell">
@@ -763,6 +774,24 @@ brandList.slice(0, 10).forEach(brand => {
   brandLogosDiv.appendChild(span);
 });
 
+// ---- Render buy grid ----
+const buyGrid = document.getElementById('cardsGrid');
+if (buyGrid) {
+  brandList.slice(0, 8).forEach(brand => {
+    const data = brandData[brand];
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="card-banner">${data.icon}</div>
+      <div class="card-body">
+        <div class="card-name">${brand}</div>
+        <button class="card-buy" onclick="alert('Buy coming soon!')">Buy</button>
+      </div>
+    `;
+    buyGrid.appendChild(card);
+  });
+}
+
 // ---- Render sell grid ----
 function getRateDisplay(currencies) {
   const first = Object.values(currencies)[0];
@@ -846,17 +875,15 @@ function selectCurrency(cur, btn) {
 
 function updateRateDisplay() {
   const rate = brandData[currentBrand].currencies[currentCurrency];
+  const note = brandData[currentBrand].note || '';
+
+  // Update badge in card preview
   document.getElementById('modalRate').textContent = `₦${rate} / ${currentCurrency}`;
 
-  const noteEl = brandData[currentBrand].note;
-  const extra = noteEl ? ` · ${noteEl}` : '';
-  document.getElementById('currentRateDisplay').textContent =
-    isRangeRate
-      ? `₦${rate} per ${currentCurrency}${extra}`
-      : `₦${rate} per ${currentCurrency}${extra}`;
-
+  // Update rate info row
   document.getElementById('currencyRateDisplay').innerHTML =
-    `Rate: <strong>₦${rate} per 1 ${currentCurrency}</strong>${extra ? ' <span style="font-size:0.72rem;color:var(--gray)">· ' + extra + '</span>' : ''}`;
+    `Rate: <strong>₦${rate} per 1 ${currentCurrency}</strong>` +
+    (note ? ` <span style="font-size:0.72rem;color:var(--gray)"> · ${note}</span>` : '');
 }
 
 function calculatePayoutModal() {
@@ -870,16 +897,16 @@ function calculatePayoutModal() {
   }
 
   if (typeof rate === 'string') {
-    // Range rate e.g. "700–900"
     const [low, high] = rate.split('–').map(Number);
-    const payoutLow = (faceValue * low).toLocaleString('en-NG');
-    const payoutHigh = (faceValue * high).toLocaleString('en-NG');
-    document.getElementById('modalTotalPayout').textContent = `₦${payoutLow} – ₦${payoutHigh}`;
-    document.getElementById('modalPayoutNote').textContent = `Based on ₦${rate} rate range`;
+    document.getElementById('modalTotalPayout').textContent =
+      `₦${(faceValue * low).toLocaleString('en-NG')} – ₦${(faceValue * high).toLocaleString('en-NG')}`;
+    document.getElementById('modalPayoutNote').textContent =
+      `${currentCurrency} rate: ₦${rate} (range)`;
   } else {
-    const payout = (faceValue * rate).toLocaleString('en-NG');
-    document.getElementById('modalTotalPayout').textContent = `₦${payout}`;
-    document.getElementById('modalPayoutNote').textContent = `At ₦${rate} per ${currentCurrency}`;
+    document.getElementById('modalTotalPayout').textContent =
+      `₦${(faceValue * rate).toLocaleString('en-NG')}`;
+    document.getElementById('modalPayoutNote').textContent =
+      `${currentCurrency} rate: ₦${rate} per 1 ${currentCurrency}`;
   }
 }
 
